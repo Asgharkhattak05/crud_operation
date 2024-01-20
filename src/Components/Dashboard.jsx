@@ -1,20 +1,27 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 const Dashboard = () => {
   const [apiData, setApiData] = useState([]);
   const [error, setError] = useState(null);
 
   const setData = (curData) => {
-    console.log(curData);
+   
     const { fullName, cnic,course, checkbox, id } = curData;
+ 
+    // ______________________storing Data Into Local Storag 
+
     localStorage.setItem("ID", id);
     localStorage.setItem("Full Name", fullName);
     localStorage.setItem("cnic",cnic);
     localStorage.setItem("course",course);
     localStorage.setItem("Checkbox Value", checkbox);
   };
+
+ 
+// _____________________________First Time Fetch Data 
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,6 +38,7 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
+  // __________________________Get Updated Data After Deletion 
   const getUpdateData = async () => {
     const resp = await axios.get(
       `https://65aa006b081bd82e1d95d7eb.mockapi.io/fakeData`
@@ -38,18 +46,39 @@ const Dashboard = () => {
     setApiData(resp.data);
   };
 
+  // _________________________Delete Data ___________________
+
   const deleteData = async (id) => {
-    try {
-      // Wait for the deletion to complete
-      await axios.delete(
-        `https://65aa006b081bd82e1d95d7eb.mockapi.io/fakeData/${id}`
-      );
-      // After successful deletion, fetch and update the data
-      getUpdateData();
-    } catch (error) {
-      console.error("Error deleting data:", error);
+    // Alert message
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
+  
+    if (result.isConfirmed) {
+      try {
+        // Wait for the deletion to complete
+        await axios.delete(`https://65aa006b081bd82e1d95d7eb.mockapi.io/fakeData/${id}`);
+        // After successful deletion, fetch and update the data
+        getUpdateData();
+        
+        // Show success message
+        Swal.fire({
+          title: "Deleted!",
+          text: "Your file has been deleted.",
+          icon: "success",
+        });
+      } catch (error) {
+        console.error("Error deleting data:", error);
+      }
     }
   };
+  
 
   return (
     <>   

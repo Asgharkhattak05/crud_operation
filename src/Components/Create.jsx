@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useFormik } from "formik";
 import axios from "axios";
 import "../App.css"
@@ -38,10 +38,10 @@ const validate = (values) => {
   return errors;
 };
 
-        // Main Function 
+        // ___________________________________Main Function 
 
 const Create = () => {
-
+      const inputMaskRef=useRef()
     // Post Data on Onsubmit  usin axios
   const onSubmit = (values, { resetForm }) => {
     axios.post(`https://65aa006b081bd82e1d95d7eb.mockapi.io/fakeData`, values);
@@ -55,13 +55,12 @@ const Create = () => {
   };
 
   useEffect(() => {
-
-    Inputmask({
-      mask: '99999-9999999-9',
-      
-    }).mask(document.getElementById("cnic"));
-
-  }, []); 
+if(inputMaskRef.current){
+  Inputmask({
+    mask: '99999-9999999-9',
+  }).mask(inputMaskRef.current)
+}
+}, [inputMaskRef]); 
 
   const formik = useFormik({
     initialValues,
@@ -73,7 +72,7 @@ const Create = () => {
   return (
     <>
     <div className="mb-3">
-      <button className=" rounded-sm font-serif py-2 px-6 bg-green-600"><NavLink to="/">Add New Data</NavLink></button>
+      <button className=" rounded-sm font-serif py-2 px-6 bg-orange-600"><NavLink to="/">Add New Data</NavLink></button>
     </div>
       <form onSubmit={formik.handleSubmit}>
         <div className="form-control">
@@ -94,6 +93,7 @@ const Create = () => {
           <label htmlFor="cnic">National Identity 'CNIC'</label>
           <input
              placeholder="XXXXX-XXXXXXX-X"  
+             ref={inputMaskRef}
             type="text"
             id="cnic"
             name="cnic"

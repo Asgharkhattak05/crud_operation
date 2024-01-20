@@ -37,7 +37,7 @@ const validate = (values) => {
   return errors;
 };
 
-// Main Function
+// ____________________________Main Function_______________________________________
 
 const Update = () => {
   const [id, setID] = useState(null);
@@ -75,6 +75,8 @@ const Update = () => {
     alert("Update  succefully");
   };
 
+  // ___________________first time getting data into input fields from localStorage
+
   useEffect(() => {
     setID(localStorage.getItem("ID"));
     setfullName(localStorage.getItem("Full Name"));
@@ -83,13 +85,13 @@ const Update = () => {
     setCheckbox(localStorage.getItem("Checkbox Value"));
   }, []);
 
-  const handleEmpty = () => {
-    setfullName("");
-    setCnic("");
-    setCourse("")
-    setCheckbox(false);
-  };
-  useEffect(() => {}, [handleEmpty]);
+  // const handleEmpty = () => {
+  //   setfullName("");
+  //   setCnic("");
+  //   setCourse("")
+  //   setCheckbox(false);
+  // };
+  // useEffect(() => {}, [handleEmpty]);
 
   const formik = useFormik({
     initialValues,
@@ -166,7 +168,7 @@ const Update = () => {
 
        <div className="flex justify-between">
        <button
-          onClick={handleEmpty}
+          // onClick={handleEmpty}
           className="py-3 px-8 bg-orange-600 rounded-lg hover:bg-orange-500"
           type="submit"
         >
