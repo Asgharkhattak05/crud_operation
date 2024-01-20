@@ -51,9 +51,7 @@ const Create = () => {
         console.error('Error submitting form:', error);
     }
 
-    alert(<div className="">
-      <h2>Submit Succefully</h2>
-    </div>)
+    alert("Submited Succefully")
   };
 
   useEffect(() => {
